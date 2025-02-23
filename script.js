@@ -28,6 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let firstSchoolCreated = false; // Flag to track if the first school has been created
     let speedIncreaseDelay = 2000; // Delay before speed starts increasing (2 seconds)
 
+    // Gun position variables
+    let gunX = window.innerWidth / 2;
+    let gunY = window.innerHeight / 2;
+
     // Start game on first interaction
     document.addEventListener('click', startOnInteraction);
     document.addEventListener('keydown', startOnInteraction);
@@ -133,8 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         }
-
-        console.log(`Current Speed: ${enemySpeed}`); // Debugging: Log the current speed
 
         const currentX = parseFloat(enemyGroup.style.left) || (window.innerWidth - (20 * 100));
         const newX = currentX - (enemySpeed * deltaTime); // Move at pixels per second
@@ -256,6 +258,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
+        // Update gun position
+        gun.style.left = `${gunX - gun.offsetWidth / 2}px`;
+        gun.style.top = `${gunY - gun.offsetHeight / 2}px`;
+
         animationFrameId = requestAnimationFrame(gameLoop);
     }
 
@@ -266,18 +272,17 @@ document.addEventListener('DOMContentLoaded', () => {
         cancelAnimationFrame(animationFrameId);
     }
 
-    document.addEventListener('mousemove', (e) => {
+    // Optimized gun movement with requestAnimationFrame
+    function updateGunPosition(e) {
         if (isGameOver || isPaused) return;
-        gun.style.left = `${e.clientX - gun.offsetWidth / 2}px`;
-        gun.style.top = `${e.clientY - gun.offsetHeight / 2}px`;
-    });
+        gunX = e.clientX || e.touches[0].clientX;
+        gunY = e.clientY || e.touches[0].clientY;
+    }
 
+    document.addEventListener('mousemove', updateGunPosition);
     document.addEventListener('touchmove', (e) => {
-        if (isGameOver || isPaused) return;
         e.preventDefault();
-        const touch = e.touches[0];
-        gun.style.left = `${touch.clientX - gun.offsetWidth / 2}px`;
-        gun.style.top = `${touch.clientY - gun.offsetHeight / 2}px`;
+        updateGunPosition(e);
     }, { passive: false });
 
     document.addEventListener('keydown', (e) => {
