@@ -1,0 +1,205 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow: hidden;
+  background: linear-gradient(to bottom, #000428, #004e92);
+  color: white;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  width: 100vw;
+}
+
+#game-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.enemy {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: left 2s linear, opacity 0.3s; /* Consistent group speed */
+  z-index: 5;
+}
+
+.shark { background-image: url('shark.png.png'); }
+.octopus { background-image: url('octopus.png.png'); }
+.fish { background-image: url('fish.png.png'); }
+
+.plasma {
+  position: absolute;
+  width: 20px;
+  height: 10px;
+  background: radial-gradient(circle, #00ffff, #0000ff);
+  border-radius: 50%;
+  box-shadow: 0 0 10px #00ffff, 0 0 20px #0000ff;
+  animation: pulse 0.5s infinite, plasmaShot 0.6s linear forwards;
+  z-index: 8;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 10px #00ffff, 0 0 20px #0000ff; }
+  50% { transform: scale(1.2); box-shadow: 0 0 15px #00ffff, 0 0 30px #0000ff; }
+}
+
+@keyframes plasmaShot {
+  0% { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(calc(100vw - var(--start-left))); }
+}
+
+.explosion {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle, #00bfff, transparent);
+  border-radius: 50%;
+  animation: explode 0.3s linear forwards;
+  z-index: 6;
+}
+
+@keyframes explode {
+  0% { transform: scale(0); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+#gun {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: url('file:///C:/Users/user/OneDrive/Documents/projects/plasama%20gun.png') no-repeat;
+  background-size: contain;
+  cursor: none;
+  z-index: 10;
+}
+
+#scoreboard {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  font-size: 24px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#score {
+  font-weight: bold;
+}
+
+#pause-screen, #game-over-screen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background: rgba(0, 0, 50, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  display: none;
+  z-index: 20;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background: transparent;
+  border: 3px solid #fff;
+  color: white;
+  border-radius: 5px;
+  margin: 5px;
+  width: 120px;
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis;
+}
+
+button:hover {
+  background: #009acd;
+}
+
+
+#pause-btn, #sound-btn {
+  position: fixed;
+  bottom: 30px;
+  z-index: 30;
+  width: 80px; /* Increased width to prevent text overflow */
+  height: 30px;
+  padding: 0;
+  margin: 0;
+  font-size: 14px; /* Adjusted for clarity without overflow */
+  font-family: Arial, sans-serif;
+  color: #fff; /* White text */
+  background: transparent;
+  border: 3px solid #fff; /* Increased border thickness */
+  text-align: center;
+  line-height: 30px; /* Matches height for vertical centering */
+  cursor: pointer;
+  box-sizing: border-box; /* Border included in width/height */
+  white-space: nowrap; /* Prevents text wrapping */
+  overflow: hidden; /* Hides any overflow */
+  text-overflow: ellipsis; /* Adds ellipsis if text still overflows */
+}
+
+#pause-btn {
+  right: 110px; /* Adjusted to maintain separation with wider button */
+}
+
+#sound-btn {
+  right: 10px;
+}
+
+#pause-btn:hover, #sound-btn:hover {
+  background: #009acd; 
+}
+
+
+.bubble {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  animation: floatUp 4s linear forwards;
+  z-index: 1;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(100vh); opacity: 1; }
+  100% { transform: translateY(-10vh); opacity: 0; }
+}
+
+.light-ray {
+  position: absolute;
+  width: 2px;
+  height: 100vh;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+  animation: swayLight 5s infinite alternate;
+  transform-origin: top;
+  z-index: 3;
+}
+
+@keyframes swayLight {
+  0% { transform: rotate(-2deg); }
+  100% { transform: rotate(2deg); }
+}
+
+@media (max-width: 600px) {
+  .enemy, #gun { width: 30px; height: 30px; }
+  .plasma { width: 15px; height: 8px; }
+  .seaweed { width: 30px; height: 60px; }
+  #score { font-size: 18px; }
+  button { padding: 8px 16px; font-size: 14px; width: 100px; }
+}
