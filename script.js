@@ -58,11 +58,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Initialize lastTime to the current time
         lastTime = performance.now();
 
-        // Delay the creation of the first school by 1 second after user interaction
-        setTimeout(() => {
-            createContinuousSchool();
-            firstSchoolCreated = true;
-        }, 1000); // 1 second delay
+        // Create the first school immediately but with controlled speed
+        createContinuousSchool();
+        firstSchoolCreated = true;
 
         createUnderwaterEffects();
         gameLoop(performance.now());
