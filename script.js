@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastTime = performance.now(); // Initialize with current time
     let speedIncrement = 0.1; // Speed increase per second (very gradual)
     let firstSchoolCreated = false; // Flag to track if the first school has been created
+    let speedIncreaseDelay = 2000; // Delay before speed starts increasing (2 seconds)
 
     // Start game on first interaction
     document.addEventListener('click', startOnInteraction);
@@ -120,11 +121,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const deltaTime = (timestamp - lastTime) / 1000; // Seconds
         lastTime = timestamp;
 
-        // Gradually increase speed to target speed
-        if (enemySpeed < targetEnemySpeed) {
-            enemySpeed += speedIncrement * deltaTime; // Increase speed gradually
-            if (enemySpeed > targetEnemySpeed) {
-                enemySpeed = targetEnemySpeed; // Cap at target speed
+        // Delay speed increase for the first few seconds
+        if (timestamp - lastTime < speedIncreaseDelay) {
+            enemySpeed = 20; // Keep initial slow speed
+        } else {
+            // Gradually increase speed to target speed
+            if (enemySpeed < targetEnemySpeed) {
+                enemySpeed += speedIncrement * deltaTime; // Increase speed gradually
+                if (enemySpeed > targetEnemySpeed) {
+                    enemySpeed = targetEnemySpeed; // Cap at target speed
+                }
             }
         }
 
